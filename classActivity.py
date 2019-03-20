@@ -10,11 +10,13 @@ class mainly:
     def __init__(self):
         self.message = ""
         self.flag = 0
-    def writeMessage(m):
+    async def writeMessage(self, m):
+        print("message écrit !!! ")
         self.message=m
         self.flag = 1
 
-
+    def printe(self):
+        print("etst #######")
     async def loope(self):
         while True:
             print("salut")

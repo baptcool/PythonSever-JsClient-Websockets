@@ -4,14 +4,18 @@ from functools import partial
 from classActivity import mainly
 
 
+
 async def handle_message(message):
    # classMainlyInstance.writeMessage(message)
 	pass
-async def consumer_handler(websocket, path ):
+async def consumer_handler( classMainlyInstance,websocket, path):
 	print("IN")
+	
 	while True:
 		try:
 			message = await websocket.recv()
+			await classMainlyInstance['classIn'].writeMessage(message)
+			
 			await handle_message(message)
 
 		except Exception:
@@ -21,7 +25,7 @@ async def consumer_handler(websocket, path ):
 
 
 
-classMainlyInstance = mainly()
+
 
 
 
@@ -36,8 +40,12 @@ classMainlyInstance = mainly()
 #asyncio.ensure_future(classMainlyInstance.loope())
 #loop1.run_forever()
 
+classMainlyInstance = mainly()
+dictclass = dict()
+dictclass['classIn'] = classMainlyInstance
 
-start_server = websockets.serve(consumer_handler, 'localhost', 8765)
+e = partial(consumer_handler,dictclass)
+start_server = websockets.serve(e, 'localhost', 8765)
 
 #asyncio.get_event_loop().run_until_complete(start_server)
 #asyncio.get_event_loop().run_forever()
